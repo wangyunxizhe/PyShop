@@ -15,3 +15,8 @@ migrations目录用于存放数据库迁移历史文件。
 models.py文件用户保存数据库模型类。
 tests.py文件用于开发测试用例，编写单元测试。
 views.py文件用于编写Web应用视图。
+
+三，ORM相关
+1，将模型类反向生成数据表
+命令行执行 python manage.py makemigrations，作用：生成迁移文件，将“模型类”转换为表结构文件
+命令行执行 python manage.py migrate，作用：执行迁移文件，执行表结构文件，数据库生成表（默认生成在Django项目自带的sqlite数据库中）

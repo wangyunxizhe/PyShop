@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,10 +24,12 @@ SECRET_KEY = 'django-insecure-g@j1popq-6(c_92u9iz%%30irm+v)r^12!yoc_+^85_x@@zpwi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# 默认访问IP：127.0.0.1，这里设置为 '*'
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 # 注册/安装 子应用的配置项
+# 一定要注册子应用，如果不注册，在迁移的时候系统检测不到
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -75,10 +77,22 @@ WSGI_APPLICATION = 'pyShop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# Django默认生成，sqlite3数据库
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+# 将数据库更换为Mysql
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+        'USER': 'root',
+        'PASSWORD': '870814',
+        'NAME': 'python',
     }
 }
 
@@ -102,9 +116,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
-
+# 设置语言
 LANGUAGE_CODE = 'zh-hans'
-
+# 设置时区
 TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
@@ -117,6 +131,10 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# 添加项目静态资源存放路径
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
