@@ -87,3 +87,24 @@ def my_json_resp(request):
 # 重定向
 def http_redirect(request):
     return redirect('http://www.baidu.com')
+
+
+#######################################Cookie和Session#######################################
+
+def set_my_cookie(request):
+    # 1，获取GET请求中的username信息
+    username = request.GET.get('username')
+    addr = request.GET.get('addr')
+    # 2，在服务器设置cookie的信息
+    response = HttpResponse('set_my_cookie')
+    response.set_cookie("name", username)
+    # 可以设置cookie的过期时间，单位是秒
+    response.set_cookie("addr", addr, max_age=60)
+    return response
+
+
+def get_my_cookie(request):
+    print(request.COOKIES)
+    # 获取服务器中的cookie指定信息（cookie是dict类型数据）
+    name = request.COOKIES.get('name')
+    return HttpResponse(name)

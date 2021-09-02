@@ -34,4 +34,6 @@ urlpatterns = [
     path('method/', method_type),
     path('myJsonResp/', my_json_resp),
     path('myRedirect/', http_redirect),
+    path('setMyCookie/', set_my_cookie),
+    path('getMyCookie/', get_my_cookie),
 ]
