@@ -93,8 +93,8 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
-        #'PASSWORD': '870814',
-        #'NAME': 'python',
+        # 'PASSWORD': '870814',
+        # 'NAME': 'python',
         'PASSWORD': '666666',
         'NAME': 'pyshop',
     }
@@ -144,3 +144,19 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Redis相关配置-start（用于保存session）
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': '',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+# 将Django默认保存session的数据库指定为Redis
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# 保存在名为“default”的配置信息中（因为可能有多个配置信息）
+SESSION_CACHE_ALIAS = 'default'
+# Redis相关配置-end

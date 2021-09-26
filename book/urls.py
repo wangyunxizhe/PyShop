@@ -36,4 +36,6 @@ urlpatterns = [
     path('myRedirect/', http_redirect),
     path('setMyCookie/', set_my_cookie),
     path('getMyCookie/', get_my_cookie),
+    path('setMySession/', set_my_session),
+    path('getMySession/', get_my_session),
 ]

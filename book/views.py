@@ -108,3 +108,17 @@ def get_my_cookie(request):
     # 获取服务器中的cookie指定信息（cookie是dict类型数据）
     name = request.COOKIES.get('name')
     return HttpResponse(name)
+
+
+def set_my_session(request):
+    # 1，获取GET请求中的username信息
+    username = request.GET.get('username')
+    # 2 设置session（同时Django框架也将该数据落库进了 django_session 表中）
+    request.session['username'] = username
+    return HttpResponse('set_my_session')
+
+
+def get_my_session(request):
+    username = request.session.get('username')
+    content = '{}'.format(username)
+    return HttpResponse(content)
