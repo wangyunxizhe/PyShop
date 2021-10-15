@@ -89,7 +89,17 @@ def http_redirect(request):
     return redirect('http://www.baidu.com')
 
 
-#######################################Cookie和Session#######################################
+######################Cookie+Session######################
+"""
+Cookie
+第一次请求，携带 查询字符串
+http://127.0.0.1:8000/set_cookie/?username=wyuan&password=123
+服务器接收到请求之后，获取username，服务器设置cookie信息，cookie信息中包含username
+浏览器接收到服务器响应之后，应该把cookie保存起来
+
+第二次及其之后的请求，我们访问 http://127.0.0.1:8000/，都会携带cookie信息，
+服务器就可以读取cookie信息，来判断用户身份
+"""
 
 def set_my_cookie(request):
     # 1，获取GET请求中的username信息
@@ -109,6 +119,17 @@ def get_my_cookie(request):
     name = request.COOKIES.get('name')
     return HttpResponse(name)
 
+"""
+Session
+session是保存在服务器端，需要依赖于cookie
+
+第一次请求，携带 查询字符串
+http://127.0.0.1:8000/set_session/?username=ironman，在服务器端设置session信息，
+服务器同时会生成一个sessionid的cookie信息。浏览器接收到这个信息后，会把cookie数据保存起来。
+
+第二次及其之后的请求，都会携带这个sessionid，服务器会去验证这个sessionid，
+验证没有问题会读取相关数据，实现业务逻辑
+"""
 
 def set_my_session(request):
     # 1，获取GET请求中的username信息
