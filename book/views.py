@@ -5,6 +5,8 @@ import json
 import re
 
 # Create your views here.
+from django.views import View
+
 from book.models import BookInfo
 
 """
@@ -101,6 +103,7 @@ http://127.0.0.1:8000/set_cookie/?username=wyuan&password=123
 服务器就可以读取cookie信息，来判断用户身份
 """
 
+
 def set_my_cookie(request):
     # 1，获取GET请求中的username信息
     username = request.GET.get('username')
@@ -119,6 +122,7 @@ def get_my_cookie(request):
     name = request.COOKIES.get('name')
     return HttpResponse(name)
 
+
 """
 Session
 session是保存在服务器端，需要依赖于cookie
@@ -131,11 +135,20 @@ http://127.0.0.1:8000/set_session/?username=ironman，在服务器端设置sessi
 验证没有问题会读取相关数据，实现业务逻辑
 """
 
+
 def set_my_session(request):
     # 1，获取GET请求中的username信息
     username = request.GET.get('username')
     # 2 设置session（同时Django框架也将该数据落库进了 django_session 表中）
     request.session['username'] = username
+
+    # 也可以给session设置过期时间，单位是秒
+    request.session.set_expiry(360)
+    # clear：删除session里的数据，但是会保留key
+    # request.session.clear()
+    # flush：删除所有的数据，包括key
+    # request.session.flush()
+
     return HttpResponse('set_my_session')
 
 
@@ -143,3 +156,35 @@ def get_my_session(request):
     username = request.session.get('username')
     content = '{}'.format(username)
     return HttpResponse(content)
+
+
+######################类视图######################
+# 在Django中也可以使用类来定义一个视图，称为类视图
+
+def login(request):
+    if request.method == 'GET':
+        return HttpResponse('Get 请求')
+    else:
+        return HttpResponse('Post 请求')
+
+
+"""
+类视图的定义:
+1，要继承View类。
+2，类视图中的方法名是采用http方法的小写，用于区分前端不同的请求方式
+例：
+class 类视图名字（View）:
+    def get(self,request):
+        return HttpResponse('xxx')
+    def http_method_lower(self,request):
+        return HttpResponse('xxx')
+"""
+
+
+class LoginView(View):
+
+    def get(self, request):
+        return HttpResponse('get 类视图 get')
+
+    def post(self, request):
+        return HttpResponse('post 类视图 post')

@@ -147,16 +147,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redis相关配置-start（用于保存session）
 CACHES = {
+    # 如果配置多个，在与‘default’同级增加
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': '',
+        'LOCATION': 'redis://192.168.112.130:6379/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
 }
-# 将Django默认保存session的数据库指定为Redis
+# 缓存策略：本地缓存，储存在本机内存中，如果丢失则不能找回，比数据库方式更快。将Django默认保存session的数据库指定为Redis
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# 缓存策略：混合存储，redis、MySQL都会落库。优先缓存进行存取，如果没有则从数据库存取
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 # 保存在名为“default”的配置信息中（因为可能有多个配置信息）
 SESSION_CACHE_ALIAS = 'default'
 # Redis相关配置-end

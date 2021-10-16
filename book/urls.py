@@ -38,4 +38,7 @@ urlpatterns = [
     path('getMyCookie/', get_my_cookie),
     path('setMySession/', set_my_session),
     path('getMySession/', get_my_session),
+    path('login/', login),
+    # 添加路由，指向自己的“类视图”函数
+    path('classLogin/', LoginView.as_view()),
 ]
