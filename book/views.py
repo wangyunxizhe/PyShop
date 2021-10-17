@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.http import HttpResponse, JsonResponse
@@ -188,3 +189,18 @@ class LoginView(View):
 
     def post(self, request):
         return HttpResponse('post 类视图 post')
+
+
+"""
+多继承示例
+LoginRequiredMixin类的作用：判断，只有登录用户（登录admin站点）才可以访问页面，
+"""
+
+
+class OrderLogin(LoginRequiredMixin, View):
+
+    def get(self, request):
+        return HttpResponse('GET “我的订单”页面，这个页面必须登录')
+
+    def post(self, request):
+        return HttpResponse('POST “我的订单”页面，这个页面必须登录')

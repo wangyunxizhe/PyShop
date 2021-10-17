@@ -41,4 +41,5 @@ urlpatterns = [
     path('login/', login),
     # 添加路由，指向自己的“类视图”函数
     path('classLogin/', LoginView.as_view()),
+    path('order/', OrderLogin.as_view()),
 ]
