@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'person.apps.PersonConfig',
 ]
 
+# django的中间件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     # 如果要禁用session把下面这行注释掉
@@ -54,6 +55,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 注册自定义的django中间件
+    'book.middleware.TestMiddleWare',
+    'book.middleware.TestMiddleWare2',
 ]
 
 ROOT_URLCONF = 'pyShop.urls'
@@ -94,10 +98,10 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
-        # 'PASSWORD': '870814',
-        # 'NAME': 'python',
-        'PASSWORD': '666666',
-        'NAME': 'pyshop',
+        'PASSWORD': '870814',
+        'NAME': 'python',
+        # 'PASSWORD': '666666',
+        # 'NAME': 'pyshop',
     }
 }
 
@@ -151,7 +155,8 @@ CACHES = {
     # 如果配置多个，在与‘default’同级增加
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.112.130:6379/0',
+        # 'LOCATION': 'redis://192.168.112.130:6379/0',
+        'LOCATION': 'redis://192.168.68.131:6379/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }

@@ -193,7 +193,9 @@ class LoginView(View):
 
 """
 多继承示例
-LoginRequiredMixin类的作用：判断，只有登录用户（登录admin站点）才可以访问页面，
+继承LoginRequiredMixin类的作用：判断，只有登录用户（登录admin站点）才可以访问页面，
+可使用http://127.0.0.1:8000/admin/login/进行登录，登录成功后才能访问继承了LoginRequiredMixin的类视图。
+这里需要注意继承的顺序，如果LoginRequiredMixin写在View之后，则会导致LoginRequiredMixin失效
 """
 
 
