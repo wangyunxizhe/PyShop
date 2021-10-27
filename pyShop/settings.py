@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.template.backends import django
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -160,12 +162,62 @@ CACHES = {
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
+    },
+    'session': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        # 'LOCATION': 'redis://192.168.112.130:6379/0',
+        'LOCATION': 'redis://192.168.68.131:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
 }
 # 缓存策略：本地缓存，储存在本机内存中，如果丢失则不能找回，比数据库方式更快。将Django默认保存session的数据库指定为Redis
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # 缓存策略：混合存储，redis、MySQL都会落库。优先缓存进行存取，如果没有则从数据库存取
 # SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-# 保存在名为“default”的配置信息中（因为可能有多个配置信息）
-SESSION_CACHE_ALIAS = 'default'
+# 保存在名为“session”的配置信息中（因为可能有多个配置信息）。这里使用 1 号库来保存session信息
+SESSION_CACHE_ALIAS = 'session'
 # Redis相关配置-end
+
+# 日志相关配置
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # 是否禁用已经存在的日志器
+    'formatters': {  # 日志格式
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(lineno)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(module)s %(lineno)d %(message)s'
+        }
+    },
+    'filters': {  # 对日志进行过滤
+        'require_debug_true': {  # django在debug模式下才输出日志
+            '()': 'django.utils.log.RequireDebugTrue'
+        }
+    },
+    'handlers': {  # 日志处理方法
+        'console': {  # 向终端中输出日志
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {  # 向文件中输出日志
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/all.log'),  # 日志文件位置
+            'maxBytes': 300 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {  # 日志器
+        'myLog': {  # 定义一个名为myLog的日志器
+            'handlers': ['console', 'file'],  # 同时向终端和文件输出日志
+            'propagate': True,  # 是否继续传递日志信息
+            'level': 'INFO'  # 日志器接收的最低日志级别
+        }
+    }
+}

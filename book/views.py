@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
@@ -206,3 +208,14 @@ class OrderLogin(LoginRequiredMixin, View):
 
     def post(self, request):
         return HttpResponse('POST “我的订单”页面，这个页面必须登录')
+
+
+######################logger的应用######################
+
+def log(request):
+    logger = logging.getLogger('myLog')
+    logger.info('我是 INFO 级别的日志')
+    logger.warning('我是 warning 级别的日志')
+    logger.error('我是 ERROR 级别的日志')
+    logger.debug('我是 DEBUG 级别的日志')
+    return HttpResponse('log()')
