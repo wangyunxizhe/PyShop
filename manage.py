@@ -7,6 +7,8 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pyShop.settings')
+    # 有的子应用在apps目录下，这里需要加上这一行才能将apps目录下的子应用注册上
+    sys.path.append('./apps')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

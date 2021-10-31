@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,8 +27,8 @@ SECRET_KEY = 'django-insecure-g@j1popq-6(c_92u9iz%%30irm+v)r^12!yoc_+^85_x@@zpwi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# 默认访问IP：127.0.0.1，这里设置为 '*'
-ALLOWED_HOSTS = ['*']
+# 默认访问IP：127.0.0.1，也可设置为 '*'，或指定具体域名（同时更改本地host文件，如Linux中就需要 vim /etc/hosts）
+ALLOWED_HOSTS = ['127.0.0.1', 'www.pyshop.site']
 
 # Application definition
 # 注册/安装 子应用的配置项
@@ -39,11 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 将新建的子应用“book”，注册到项目中。方案1
+    # 将新建的子应用“book”，注册到项目中。
+    # 方案1：直接写子应用的名字 book
     # 'book'
-    # 方案2
+    # 方案2：写配置类的地址
     'book.apps.BookConfig',
     'person.apps.PersonConfig',
+    # 当子应用users与manage.py不同级时注意下面的写法，在manage.py也需加入sys.path.append('./apps')
+    'apps.users',
 ]
 
 # django的中间件
@@ -100,10 +104,10 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
-        'PASSWORD': '870814',
-        'NAME': 'python',
-        # 'PASSWORD': '666666',
-        # 'NAME': 'pyshop',
+        # 'PASSWORD': '870814',
+        # 'NAME': 'python',
+        'PASSWORD': '666666',
+        'NAME': 'pyshop',
     }
 }
 
