@@ -225,3 +225,7 @@ LOGGING = {
         }
     }
 }
+
+# 使用自定义的User覆盖系统自带的User类，做“用户管理”相关功能时使用
+# 这个“点式”路径包含Django子应用的名称（必须在INSTALLED_APPS中注册过），以及要用作User模型的自定义模型的名称（项目中正好也叫User）
+AUTH_USER_MODEL = 'users.User'
