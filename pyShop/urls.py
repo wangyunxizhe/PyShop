@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from utils.converters import UsernameConverter
+from django.urls import register_converter
+
+# 注册转换器
+register_converter(UsernameConverter, 'username')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # 添加路由：引入子应用（book）中的urls.py
+    # 添加子应用的路由：
+    # 引入子应用（book）中的urls.py
     path('', include('book.urls')),
+    # 引入子应用（users）中的urls.py
+    path('', include('apps.users.urls')),
 ]

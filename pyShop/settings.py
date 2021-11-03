@@ -46,12 +46,16 @@ INSTALLED_APPS = [
     # 方案2：写配置类的地址
     'book.apps.BookConfig',
     'person.apps.PersonConfig',
-    # 当子应用users与manage.py不同级时注意下面的写法，在manage.py也需加入sys.path.append('./apps')
+    # 当子应用users与manage.py不同级时注意下面的写法，在apps/users/apps.py中的name = 'apps.users'
     'apps.users',
+    # CORS支持跨域
+    'corsheaders',
 ]
 
 # django的中间件
 MIDDLEWARE = [
+    # CORS的配置要放在中间件的最上面！！！
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     # 如果要禁用session把下面这行注释掉
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -104,10 +108,10 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
-        # 'PASSWORD': '870814',
-        # 'NAME': 'python',
-        'PASSWORD': '666666',
-        'NAME': 'pyshop',
+        'PASSWORD': '870814',
+        'NAME': 'python',
+        # 'PASSWORD': '666666',
+        # 'NAME': 'pyshop',
     }
 }
 
@@ -229,3 +233,11 @@ LOGGING = {
 # 使用自定义的User覆盖系统自带的User类，做“用户管理”相关功能时使用
 # 这个“点式”路径包含Django子应用的名称（必须在INSTALLED_APPS中注册过），以及要用作User模型的自定义模型的名称（项目中正好也叫User）
 AUTH_USER_MODEL = 'users.User'
+
+# CORS白名单
+CORS_ORIGIN_WHITELIST = (
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+)
+# 允许携带cookie
+CORS_ALLOW_CREDENTIALS = True

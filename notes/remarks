@@ -31,3 +31,7 @@ views.py文件用于编写Web应用视图。
 四，Django admin站点：http://127.0.0.1:8000/admin/
 账密：wyuan/123456;admin/666666
 
+五，前端
+前端启动命令：py -m http.server 8080
+支持跨域：pip install django-cors-headers
+
