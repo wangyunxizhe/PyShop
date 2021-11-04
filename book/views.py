@@ -44,7 +44,7 @@ def shop(request, city_id, shop_id, mobile):
 
 
 # 接收POST请求--表单数据
-def register(request):
+def registerBook(request):
     data = request.POST
     print(data)
     return HttpResponse("POST form-data")

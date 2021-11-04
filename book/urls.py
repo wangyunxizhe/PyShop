@@ -29,7 +29,7 @@ urlpatterns = [
     # 参数合法性校验（方式2）, <int:city_id>:<转换器名字:变量名>
     # <phone:mobile>:实现自定义转换器检验手机号的合法性
     path('<int:city_id>/<shop_id>/<phone:mobile>/', shop),
-    path('register/', register),
+    path('registerBook/', registerBook),
     path('json/', post_json),
     path('method/', method_type),
     path('myJsonResp/', my_json_resp),
