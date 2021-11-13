@@ -32,6 +32,6 @@ views.py文件用于编写Web应用视图。
 账密：wyuan/12345678;admin/66666666
 
 五，前端
-前端启动命令：py -m http.server 8080
+前端启动命令：win7==>py -m http.server 8080/win10==>python3 -m http.server 8080
 支持跨域：pip install django-cors-headers
-
+安装图片验证码第三方SDK：pip install pillow

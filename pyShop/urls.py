@@ -28,4 +28,6 @@ urlpatterns = [
     path('', include('book.urls')),
     # 引入子应用（users）中的urls.py
     path('', include('apps.users.urls')),
+    # 引入子应用（verifications）中的urls.py
+    path('', include('apps.verifications.urls')),
 ]
