@@ -109,10 +109,12 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
-        # 'PASSWORD': '870814',
-        # 'NAME': 'python',
-        'PASSWORD': '666666',
-        'NAME': 'pyshop',
+        # 笔记本
+        'PASSWORD': '870814',
+        'NAME': 'python',
+        # 台式机
+        # 'PASSWORD': '666666',
+        # 'NAME': 'pyshop',
     }
 }
 
@@ -166,24 +168,30 @@ CACHES = {
     # 如果配置多个，在与‘default’同级增加
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.112.130:6379/0',
-        # 'LOCATION': 'redis://192.168.68.131:6379/0',
+        # 台式机
+        # 'LOCATION': 'redis://192.168.112.130:6379/0',
+        # 笔记本
+        'LOCATION': 'redis://192.168.68.131:6379/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     },
     'session': {  # 专门用于保存session
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.112.130:6379/1',
-        # 'LOCATION': 'redis://192.168.68.131:6379/1',
+        # 台式机
+        # 'LOCATION': 'redis://192.168.112.130:6379/1',
+        # 笔记本
+        'LOCATION': 'redis://192.168.68.131:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     },
     'code': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.112.130:6379/2',
-        # 'LOCATION': 'redis://192.168.68.131:6379/2',
+        # 台式机
+        # 'LOCATION': 'redis://192.168.112.130:6379/2',
+        # 笔记本
+        'LOCATION': 'redis://192.168.68.131:6379/2',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
