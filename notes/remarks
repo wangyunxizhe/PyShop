@@ -39,3 +39,7 @@ views.py文件用于编写Web应用视图。
 六：短信验证
 平台：容联云（https://www.yuntongxun.com/?ly=baidu-pz-p&qd=cpc&cp=ppc&xl=ds&kw=12006266）（13851601190/baqi0814）
 SDK安装：pip install ronglian_sms_sdk
+
+七：异步解决方案
+Celery:pip install -U Celery
+本工程重在实现整体功能，并未使用MQ，在该工程中使用redis来实现MQ的业务场景

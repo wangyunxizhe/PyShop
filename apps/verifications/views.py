@@ -1,12 +1,9 @@
 from random import randint
-
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-
-# Create your views here.
+from celery_tasks.sms.tasks import celery_send_sms_code
 from django.views import View
 from django_redis import get_redis_connection
-
 from libs.captcha.captcha import captcha
 from utils.sendMessage import RongLianUtils
 
@@ -67,6 +64,11 @@ class SmsCodeView(View):
         # 为避免频繁操作导致的频繁发送短信，需要加入此类操作验证
         # redis_cli.setex('send_flag_%s' % mobile, 60, 'haved')
 
-        # 使用容联云发送短信
-        RongLianUtils().send_message(text=sms_code, minute=3)
+        # 使用容联云 直接 发送短信
+        # RongLianUtils().send_message(text=sms_code, minute=3)
+
+        # 结合 Celery 异步任务，使用容联云 异步 发送短信
+        # 这里需要调用task装饰器中提供的delay方法，入参等同于被装饰的方法（celery_send_sms_code）
+        celery_send_sms_code.delay(sms_code=sms_code, minute=3)
+
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
