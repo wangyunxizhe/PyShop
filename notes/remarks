@@ -41,5 +41,6 @@ views.py文件用于编写Web应用视图。
 SDK安装：pip install ronglian_sms_sdk
 
 七：异步解决方案
+作用点：前端请求发送手机验证码，后端异步进行异步处理，发送手机验证码，达到前端点击后就开始倒计时，无需等待后端处理完业务逻辑后再倒计时
 Celery:pip install -U Celery
 本工程重在实现整体功能，并未使用MQ，在该工程中使用redis来实现MQ的业务场景

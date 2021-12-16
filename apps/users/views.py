@@ -1,7 +1,8 @@
 import json
 import re
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.http import JsonResponse
 from django.views import View
 from apps.users.models import User
@@ -18,6 +19,9 @@ class UsernameCountView(View):
 
 
 class RegisterView(View):
+    '''
+    注册请求
+    '''
 
     def post(self, request):
         # 1，接收前端数据
@@ -61,6 +65,9 @@ class RegisterView(View):
 
 
 class LoginView(View):
+    '''
+    登录请求
+    '''
 
     def post(self, request):
         data = json.loads(request.body.decode())
@@ -91,3 +98,42 @@ class LoginView(View):
         # 让前端可以从cookie从获取'username'的value进行展示
         response.set_cookie('username', username)
         return response
+
+
+class LogoutView(View):
+    '''
+    退出登录请求
+    '''
+
+    def delete(self, request):
+        # 利用django自带函数实现退出登录功能，本质上就是删除session
+        logout(request)
+        response = JsonResponse({'code': 0, 'errMsg': 'OK'})
+        # 删除指定的cookie
+        response.delete_cookie('username')
+        return response
+
+
+class LoginRequiredJsonMixin(AccessMixin):
+    """方式一：模仿 LoginRequiredMixin 类改写 return JsonResponse({'code': 0, 'errMsg': 'no login'}) """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'code': 0, 'errMsg': 'no login'})
+        return super().dispatch(request, *args, **kwargs)
+
+
+class LoginRequiredMixinOverride(LoginRequiredMixin):
+    """方式二：继承 LoginRequiredMixin 类，重写 handle_no_permission 函数 """
+
+    def handle_no_permission(self):
+        return JsonResponse({'code': 0, 'errMsg': 'no login'})
+
+
+class CenterView(LoginRequiredMixinOverride, View):
+    '''
+    解决未登录用户重定向django自带页面问题，改为返回json数据
+    '''
+
+    def get(self, request):
+        return JsonResponse({'code': 0, 'errMsg': 'OK'})
