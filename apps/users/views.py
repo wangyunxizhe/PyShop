@@ -1,7 +1,7 @@
 import json
 import re
 
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.http import JsonResponse
 from django.views import View
 from apps.users.models import User
@@ -58,3 +58,36 @@ class RegisterView(View):
         # session登录状态保持，session保存在redis中
         login(request, user)
         return JsonResponse({'code': 0, 'errMsg': 'OK'})
+
+
+class LoginView(View):
+
+    def post(self, request):
+        data = json.loads(request.body.decode())
+        username = data.get('username')
+        password = data.get('password')
+        remembered = data.get('remembered')
+        if not all([username, password]):
+            return JsonResponse({'code': 400, 'errMsg': '请输入用户名/密码'})
+        # 支持用户名/手机号登录，此处判断具体使用何种属性去进行登录验证
+        if re.match('1[3-9]\\d{9}', username):
+            User.USERNAME_FIELD = 'mobile'
+        else:
+            User.USERNAME_FIELD = 'username'
+        # 验证用户密码是否正确：使用django提供的方法实现，底层逻辑就是使用用户密码查询数据库
+        user = authenticate(username=username, password=password)
+        if user is None:
+            return JsonResponse({'code': 400, 'errMsg': '账号/密码不正确'})
+        # 验证通过，记录session
+        login(request, user)
+        # 判断是否“记住我”
+        if remembered is not None:
+            # 记住登录，默认记住两周
+            request.session.set_expiry(None)
+        else:
+            # 不记住登录，浏览器关闭后，清空session
+            request.session.set_expiry(0)
+        response = JsonResponse({'code': 0, 'errMsg': 'OK'})
+        # 让前端可以从cookie从获取'username'的value进行展示
+        response.set_cookie('username', username)
+        return response
