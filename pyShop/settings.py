@@ -268,3 +268,5 @@ EMAIL_HOST_USER = 'wu43456229@163.com'
 EMAIL_HOST_PASSWORD = 'ZJVOLVRUGQIYHXSU'
 # 收件人看到的发件人
 EMAIL_FROM = '蔡徐抻<wu43456229@163.com>'
+# 自定义配置
+VERIFY_URL = 'http://127.0.0.1:8080/success_verify_email.html'

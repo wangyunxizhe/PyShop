@@ -7,6 +7,9 @@ from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views import View
 from apps.users.models import User
+from apps.users.utils import generic_email_verify_token, check_verify_token
+from celery_tasks.email.tasks import celery_send_email
+from pyShop import settings
 
 
 class UsernameCountView(View):
@@ -168,10 +171,40 @@ class EmailView(LoginRequiredMixinOverride, View):
         # 发件人
         from_email = 'wu43456229@163.com'
         # 收件人列表
-        to_list = ['wu43456229@163.com', '543456229@qq.com']
+        # to_list = ['wu43456229@163.com', '543456229@qq.com']
+        to_list = ['wu43456229@163.com']
+        # 使用user_id获取加密后的token
+        token = generic_email_verify_token(request.user.id)
+        verify_url = settings.VERIFY_URL + '?token=%s' % token
         # html标签的msg
-        html_message = "点击按钮进行激活 <a href='http://www.baidu.com'>激活</a>"
-        # 调用django发送邮件模块的函数（相关配置在settings.py中）
+        html_message = "点击按钮进行激活 <a href='%s'>激活</a>" % verify_url
+        # html_message = "点击按钮进行激活 <a href='http://www.baidu.com/?token=%s'>激活</a>"%token
+
+        # 异步发送邮件
+        # celery_send_email.delay(subject=subject, message=message, from_email=from_email,
+        #                         to_list=to_list, html_message=html_message)
+
+        # 同步发送
         send_mail(subject=subject, message=message, from_email=from_email,
                   recipient_list=to_list, html_message=html_message)
+        return JsonResponse({'code': 0, 'errMsg': 'OK'})
+
+
+class EmailVerifyView(View):
+    '''
+    处理“邮箱激活”业务
+    '''
+
+    def put(self, request):
+        params = request.GET
+        token = params.get('token')
+        if token is None:
+            return JsonResponse({'code': 400, 'errMsg': '未获取到token'})
+        user_id = check_verify_token(token)
+        if user_id is None:
+            return JsonResponse({'code': 400, 'errMsg': '未获取到user_id'})
+        # 通过user_id获取user对象
+        user = User.objects.get(id=user_id)
+        user.email_active = True
+        user.save()
         return JsonResponse({'code': 0, 'errMsg': 'OK'})

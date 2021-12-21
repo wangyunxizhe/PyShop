@@ -18,4 +18,4 @@ app = Celery('celery_tasks')
 # 2.设置broker（通过加载配置文件设置broker）
 app.config_from_object('celery_tasks.config')
 # 3，让Celery自动检测指定包的任务，入参为列表，类容为tasks的路径们
-app.autodiscover_tasks(['celery_tasks.sms'])
+app.autodiscover_tasks(['celery_tasks.sms','celery_tasks.email'])

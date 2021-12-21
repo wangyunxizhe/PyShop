@@ -1,4 +1,3 @@
-from celery.app import task
 from celery_tasks.main import app
 from utils.sendMessage import RongLianUtils
 
