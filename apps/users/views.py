@@ -3,6 +3,7 @@ import re
 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
+from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views import View
 from apps.users.models import User
@@ -132,8 +133,45 @@ class LoginRequiredMixinOverride(LoginRequiredMixin):
 
 class CenterView(LoginRequiredMixinOverride, View):
     '''
-    解决未登录用户重定向django自带页面问题，改为返回json数据
+    跳转“用户中心”
+    1，要解决未登录用户重定向django自带页面问题，改为返回json数据（提供以上的方式一/二，两种解决方案）
     '''
 
     def get(self, request):
+        # request.user 是已经登录用户的信息
+        info_data = {
+            'username': request.user.username,
+            'email': request.user.email,
+            'mobile': request.user.mobile,
+            'email_active': request.user.email_active,
+        }
+        return JsonResponse({'code': 0, 'errMsg': 'OK', 'info_data': info_data})
+
+
+class EmailView(LoginRequiredMixinOverride, View):
+    '''
+    处理“添加邮箱”业务
+    本功能是基于“登录用户”开发的，所以也要继承LoginRequiredMixinOverride，来获取登录用户的信息
+    '''
+
+    def put(self, request):
+        data = json.loads(request.body.decode())
+        email = data.get('email')
+        # 获取登录用户 User对象，并赋值给实例 user
+        user = request.user
+        user.email = email
+        user.save()
+        # 邮件主题
+        subject = '来自python客户端的一封信'
+        # 邮件内容
+        message = '这里是要说的话'
+        # 发件人
+        from_email = 'wu43456229@163.com'
+        # 收件人列表
+        to_list = ['wu43456229@163.com', '543456229@qq.com']
+        # html标签的msg
+        html_message = "点击按钮进行激活 <a href='http://www.baidu.com'>激活</a>"
+        # 调用django发送邮件模块的函数（相关配置在settings.py中）
+        send_mail(subject=subject, message=message, from_email=from_email,
+                  recipient_list=to_list, html_message=html_message)
         return JsonResponse({'code': 0, 'errMsg': 'OK'})

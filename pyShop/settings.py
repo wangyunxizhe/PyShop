@@ -258,3 +258,13 @@ CORS_ORIGIN_WHITELIST = (
 )
 # 允许携带cookie
 CORS_ALLOW_CREDENTIALS = True
+
+#############################邮件功能相关配置#############################
+# EMAIL_BACKEND = 'django.core.email.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'wu43456229@163.com'
+EMAIL_HOST_PASSWORD = 'ZJVOLVRUGQIYHXSU'
+# 收件人看到的发件人
+EMAIL_FROM = '蔡徐抻<wu43456229@163.com>'

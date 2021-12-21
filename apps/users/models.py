@@ -13,6 +13,7 @@ from django.db import models
 # 2，可以继承系统自带的User，因为系统已经实现了关于密码的加密和验证功能，在这个基础上再加入自己模型的属性
 class User(AbstractUser):
     mobile = models.CharField(max_length=11, unique=True)
+    email_active = models.BooleanField(default=False, verbose_name='邮箱验证状态')
 
     # 设置表名的固定写法
     class Meta:
