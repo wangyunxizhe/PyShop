@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # 当子应用users与manage.py不同级时注意下面的写法，在apps/users/apps.py中的name = 'apps.users'
     'apps.users',
     'apps.verifications',
+    'apps.areas',
     # CORS支持跨域
     'corsheaders',
 ]
