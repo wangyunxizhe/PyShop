@@ -9,6 +9,8 @@ celery -A celery实例的脚本路径 worker -l info
 当消费者在消费时如报错，执行如下命令
 1，pip install eventlet
 2，通过该命令启动消费者：celery -A celery_tasks.main worker -l info -P eventlet
+1-1，pip install gevent
+2-1，celery -A celery_tasks.main worker -l info -P gevent
 '''
 
 # 为celery的运行，设置Django环境

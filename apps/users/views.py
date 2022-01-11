@@ -181,12 +181,13 @@ class EmailView(LoginRequiredMixinOverride, View):
         # html_message = "点击按钮进行激活 <a href='http://www.baidu.com/?token=%s'>激活</a>"%token
 
         # 异步发送邮件
-        # celery_send_email.delay(subject=subject, message=message, from_email=from_email,
-        #                         to_list=to_list, html_message=html_message)
+        celery_send_email.delay(subject=subject, message=message, from_email=from_email,
+                                to_list=to_list, html_message=html_message)
 
         # 同步发送
-        send_mail(subject=subject, message=message, from_email=from_email,
-                  recipient_list=to_list, html_message=html_message)
+        # send_mail(subject=subject, message=message, from_email=from_email,
+        #           recipient_list=to_list, html_message=html_message)
+
         return JsonResponse({'code': 0, 'errMsg': 'OK'})
 
 
