@@ -261,3 +261,28 @@ class AddressCreateView(LoginRequiredMixinOverride, View):
             "email": new_address.email
         }
         return JsonResponse({'code': 0, 'errMsg': 'OK', 'address': address})
+
+
+class AddressView(LoginRequiredMixinOverride, View):
+    '''
+    查询 收货地址
+    '''
+
+    def get(self, request):
+        user = request.user
+        addresses = Address.objects.filter(user=user, is_deleted=False)
+        address_list = []
+        for address in addresses:
+            address_list.append({
+                "id": address.id,
+                "title": address.title,
+                "receiver": address.receiver,
+                "province": address.province.name,
+                "city": address.city.name,
+                "district": address.district.name,
+                "place": address.place,
+                "mobile": address.mobile,
+                "tel": address.tel,
+                "email": address.email
+            })
+        return JsonResponse({'code': 0, 'errMsg': 'OK', 'addresses': address_list})
