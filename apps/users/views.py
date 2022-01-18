@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views import View
-from apps.users.models import User
+from apps.users.models import User, Address
 from apps.users.utils import generic_email_verify_token, check_verify_token
 from celery_tasks.email.tasks import celery_send_email
 from pyShop import settings
@@ -209,3 +209,55 @@ class EmailVerifyView(View):
         user.email_active = True
         user.save()
         return JsonResponse({'code': 0, 'errMsg': 'OK'})
+
+
+class AddressCreateView(LoginRequiredMixinOverride, View):
+    '''
+    处理“新增收货地址”业务
+    '''
+
+    def post(self, request):
+        # 判断是否超过地址数量上限
+        count = request.user.addresses.count()
+        if count >= 20:
+            return JsonResponse({'code': 400, 'errMsg': '超过地址数量上限'})
+        # 将前端请求数据转为json
+        data = json.loads(request.body.decode())
+        receiver = data.get('receiver')
+        province_id = data.get('province_id')
+        city_id = data.get('city_id')
+        district_id = data.get('district_id')
+        place = data.get('place')
+        mobile = data.get('mobile')
+        tel = data.get('tel')
+        email = data.get('email')
+        user = request.user
+        # 参数校验（非法校验略）
+        if not all([receiver, province_id, city_id, district_id, place, mobile]):
+            return JsonResponse({'code': 400, 'errMsg': '请检查输入内容'})
+        # 数据落库
+        new_address = Address.objects.create(
+            user=user,
+            title=receiver,
+            receiver=receiver,
+            province_id=province_id,
+            city_id=city_id,
+            district_id=district_id,
+            place=place,
+            mobile=mobile,
+            tel=tel,
+            email=email
+        )
+        address = {
+            'id': new_address.id,
+            "title": new_address.title,
+            "receiver": new_address.receiver,
+            "province": new_address.province.name,
+            "city": new_address.city.name,
+            "district": new_address.district.name,
+            "place": new_address.place,
+            "mobile": new_address.mobile,
+            "tel": new_address.tel,
+            "email": new_address.email
+        }
+        return JsonResponse({'code': 0, 'errMsg': 'OK', 'address': address})
