@@ -1,0 +1,18 @@
+docker命令
+导出镜像：docker save -o 导出的文件名 要导出的镜像名（例：docker save -o /app/soft/wy.rar learn/wy_first）
+导入镜像：docker load -i '镜像包'（例：docker load -i '/app/soft/wy.rar'）
+删除镜像：docker image rm 镜像名:TAG（例：docker image rm learn/wy_first:v2）
+（慎用！）删除所有镜像：docker rm -f $(docker ps -a -q)
+查看所有容器：docker container ls -a（不加 -a 显示的是“正在运行”的容器）
+交互模式运行容器（退出后容器会关闭）：docker run -it 镜像名:TAG（例：docker run -it ubuntu）
+守护进程模式运行容器（类似于后台启动）：docker run -dit 镜像名:TAG（例：docker run -dit ubuntu）
+守护进程模式运行容器（自定义容器名）：docker run -dit --name=自定义名字  ubuntu（例：docker run -dit --name=my_test_c  ubuntu）
+进入“正在运行”的容器：docker exec -it 容器ID bash（例：docker exec -it 95fd489856f2 bash）
+停止容器：docker container stop 容器ID/容器名（例：docker container stop my_test_c）
+启动容器：docker container start 容器ID/容器名（例：docker container start my_test_c）
+删除容器（正在运行的删不掉）：docker container rm 容器ID/容器名（例：docker container rm my_test_c）
+强制删除容器（正在运行的也删）：docker container rm -f 容器ID/容器名（例：docker container rm -f my_test_c）
+
+========================================================================================================================
+本项目中依赖的docker
+fastdfs镜像：docker image pull delron/fastdfs
