@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.verifications',
     'apps.areas',
+    'apps.goods',
+    'apps.contents',
     # CORS支持跨域
     'corsheaders',
 ]

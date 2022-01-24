@@ -1,3 +1,5 @@
+docker安装步骤：https://www.cnblogs.com/kingsonfu/p/11576797.html
+========================================================================================================================
 docker命令
 导出镜像：docker save -o 导出的文件名 要导出的镜像名（例：docker save -o /app/soft/wy.rar learn/wy_first）
 导入镜像：docker load -i '镜像包'（例：docker load -i '/app/soft/wy.rar'）

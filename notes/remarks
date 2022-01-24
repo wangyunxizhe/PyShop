@@ -48,6 +48,14 @@ Celery:pip install -U Celery
 本工程重在实现整体功能，并未使用MQ，在该工程中使用redis来实现MQ的业务场景
 本工程消费者启动命令：celery -A celery_tasks.main worker -l info -P eventlet
 如消费时仍旧报错换命令：celery -A celery_tasks.main worker -l info -P gevent
+注意：在pyShop目录下执行以上命令（celery_tasks是目录的名字）
 
 八：加密
 使用模块：pip install itsdangerous
+
+九：图片服务器
+1，安装FastDFS客户端扩展
+pip install fdfs_client-py-master.zip（在static文件夹中）
+pip install mutagen==1.40（注意版本，否则与fdfs客户端不兼容）
+pip install requests
+

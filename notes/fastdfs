@@ -1,0 +1,9 @@
+1，启动tracker
+docker run -dit --name tracker --network=host -v /var/fdfs/tracker:/var/fdfs delron/fastdfs tracker
+2，启动storage
+docker run -dit --name storage --network=host -e TRACKER_SERVER=Linux的IP:22122 -v /var/fdfs/storage:/var/fdfs delron/fastdfs storage
+注意：如果电脑的IP地址发生了变化，一定要删除这两个容器重新创建！！！
+
+测试代码：apps/goods/views.py
+验证：打开服务器IP:8888/返回值中Remote file_id的value，如能成功打开图片说明上传成功（端口8888是因为在docker镜像中使用的就是8888）
+例：http://192.168.68.131:8888/group1//M00/00/00/wKhEg2HuU4mAQFIVAAKHve_aAhs273.jpg
