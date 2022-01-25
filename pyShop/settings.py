@@ -272,3 +272,7 @@ EMAIL_HOST_PASSWORD = 'ZJVOLVRUGQIYHXSU'
 EMAIL_FROM = '蔡徐抻<wu43456229@163.com>'
 # 自定义配置
 VERIFY_URL = 'http://127.0.0.1:8080/success_verify_email.html'
+
+#############################加载自定义文件存储类#############################
+# 指定自定义的Django文件存储类
+DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
