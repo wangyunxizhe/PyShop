@@ -23,7 +23,7 @@ register_converter(MobileConverter, 'phone')  # 调用注册方法，并为自�
 # 固定写法：urlpatterns = []
 urlpatterns = [
     # 添加路由，指向自己的视图层函数
-    path('index/', index),
+    path('book_index/', index),
     path('create/', create),
     # 接收RESTful风格参数（和book/views.py对应看）
     # 参数合法性校验（方式2）, <int:city_id>:<转换器名字:变量名>
