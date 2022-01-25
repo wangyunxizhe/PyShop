@@ -32,4 +32,6 @@ urlpatterns = [
     path('', include('apps.verifications.urls')),
     # 引入子应用（areas）中的urls.py
     path('', include('apps.areas.urls')),
+    # 引入子应用（goods）中的urls.py
+    path('', include('apps.goods.urls')),
 ]
