@@ -1,12 +1,14 @@
+from apscheduler.schedulers.background import BackgroundScheduler
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
+from django_apscheduler.jobstores import DjangoJobStore, register_job, register_events
 from haystack.views import SearchView
 
 from apps.contents.models import ContentCategory
 from apps.goods.models import GoodsCategory, SKU
-from utils.goods import get_categories, get_breadcrumb
+from utils.goods import get_categories, get_breadcrumb, get_goods_specs
 
 
 # from fdfs_client.client import Fdfs_client
@@ -21,7 +23,7 @@ from utils.goods import get_categories, get_breadcrumb
 
 class IndexView(View):
     """
-    首页-商品分类,跳转首页模板
+    首页-商品分类；跳转首页模板，非直接与前端交互，测试用
     """
 
     def get(self, request):
@@ -122,3 +124,29 @@ class SKUSearchView(SearchView):
                 'count': context['page'].paginator.count
             })
         return JsonResponse(sku_list, safe=False)
+
+
+class DetailView(View):
+    """商品详情；跳转详情页模板，非直接与前端交互，测试用"""
+
+    def get(self, request, sku_id):
+        try:
+            sku = SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            pass
+        categories = get_categories()
+        # 根据skuID查询出的具体商品，组装"面包屑"数据
+        breadcrumb = get_breadcrumb(sku.category)
+        # 获取该商品的规格信息
+        goods_specs = get_goods_specs(sku)
+        context = {
+            'categories': categories,
+            'breadcrumb': breadcrumb,
+            'sku': sku,
+            'specs': goods_specs,
+        }
+        '''
+        正常 详情页 会使用 页面静态化 渲染，
+        这里先把数据都返回给本项目的html模板
+        '''
+        return render(request, 'detail.html', context)

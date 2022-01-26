@@ -56,6 +56,10 @@ INSTALLED_APPS = [
     'corsheaders',
     # ES支持模块
     'haystack',
+    # Linux定时任务支持模块
+    'django_crontab',
+    # Windows/Linux定时任务支持模块
+    'django_apscheduler',
 ]
 
 # django的中间件
@@ -289,3 +293,9 @@ HAYSTACK_CONNECTIONS = {
 }
 # 设置搜索 每页返回的记录条数
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 5
+
+#############################定时任务相关配置项################################
+# django-crontab配置如下（只支持Linux系统）
+CRONJOBS = [
+    ('*/1 * * * *', 'utils.crons.generic_shop_index', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log'))
+]

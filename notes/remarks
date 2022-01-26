@@ -53,3 +53,18 @@ Celery:pip install -U Celery
 八：加密
 使用模块：pip install itsdangerous
 
+九：定时任务
+只支持Linux系统，步骤如下
+安装模块：pip install django-crontab
+django增加定时任务：python manage.py crontab add
+django查询定时任务：python manage.py crontab show
+django删除定时任务：python manage.py crontab remove []
+windows运行报错解决方案：https://blog.csdn.net/qq_28691231/article/details/104801127
+
+Windows系统如下（也支持Linux）
+1，安装模块：pip install django-apscheduler
+2，执行数据库迁移命令，生成表：python manage.py migrate
+3，在任意一个views/urls.py文件中加入实现代码，使得每次启动Django框架时，定时任务都会同时启动（本项目写在goods子应用的urls.py中）
+
+
+
