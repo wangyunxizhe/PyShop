@@ -1,0 +1,4 @@
+#ES 检索模板；对应的模型类为SKU，表为t_sku；object代表了要检索的模型实例，相当于object=SKU()
+{{object.name}}
+{{object.caption}}
+{{object.id}}

@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
+from haystack.views import SearchView
 
 from apps.contents.models import ContentCategory
 from apps.goods.models import GoodsCategory, SKU
@@ -100,3 +101,24 @@ class HotGoodsView(View):
                 'price': sku.price
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'hot_skus': hot_skus})
+
+
+class SKUSearchView(SearchView):
+    """ES以及Haystack配置完成后的具体使用：首页-商品搜索栏"""
+
+    # 重写 create_response 方法，以便返回JSON格式数据
+    def create_response(self):
+        # 获取数据搜索的结果
+        context = self.get_context()
+        sku_list = []
+        for sku in context['page'].object_list:
+            sku_list.append({
+                'id': sku.object.id,
+                'name': sku.object.name,
+                'price': sku.object.price,
+                'default_image_url': sku.object.default_image.url,
+                'searchkey': context.get('query'),
+                'page_size': context['page'].paginator.num_pages,
+                'count': context['page'].paginator.count
+            })
+        return JsonResponse(sku_list, safe=False)

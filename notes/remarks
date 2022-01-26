@@ -53,9 +53,3 @@ Celery:pip install -U Celery
 八：加密
 使用模块：pip install itsdangerous
 
-九：图片服务器
-1，安装FastDFS客户端扩展
-pip install fdfs_client-py-master.zip（在static文件夹中）
-pip install mutagen==1.40（注意版本，否则与fdfs客户端不兼容）
-pip install requests
-

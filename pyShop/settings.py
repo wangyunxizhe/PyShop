@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'apps.contents',
     # CORS支持跨域
     'corsheaders',
+    # ES支持模块
+    'haystack',
 ]
 
 # django的中间件
@@ -261,7 +263,7 @@ CORS_ORIGIN_WHITELIST = (
 # 允许携带cookie
 CORS_ALLOW_CREDENTIALS = True
 
-#############################邮件功能相关配置#############################
+#############################邮件功能相关配置###############################
 # EMAIL_BACKEND = 'django.core.email.backends.smtp.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'
@@ -273,6 +275,17 @@ EMAIL_FROM = '蔡徐抻<wu43456229@163.com>'
 # 自定义配置
 VERIFY_URL = 'http://127.0.0.1:8080/success_verify_email.html'
 
-#############################加载自定义文件存储类#############################
+#############################加载自定义文件存储类############################
 # 指定自定义的Django文件存储类
 DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
+
+#############################ES 相关配置项#################################
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://192.168.68.131:9200/',
+        'INDEX_NAME': 'wyuan',
+    },
+}
+# 设置搜索 每页返回的记录条数
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 5
