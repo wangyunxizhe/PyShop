@@ -1,3 +1,5 @@
+from datetime import date
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -7,7 +9,7 @@ from django_apscheduler.jobstores import DjangoJobStore, register_job, register_
 from haystack.views import SearchView
 
 from apps.contents.models import ContentCategory
-from apps.goods.models import GoodsCategory, SKU
+from apps.goods.models import GoodsCategory, SKU, GoodsVisitCount
 from utils.goods import get_categories, get_breadcrumb, get_goods_specs
 
 
@@ -150,3 +152,26 @@ class DetailView(View):
         这里先把数据都返回给本项目的html模板
         '''
         return render(request, 'detail.html', context)
+
+
+class CategoryVisitCountView(View):
+    """分类商品统计访问量"""
+
+    def post(self, request, category_id):
+        # 根据传入的商品分类id，查询该商品分类
+        try:
+            category = GoodsCategory.objects.get(id=category_id)
+        except GoodsCategory.DoesNotExist:
+            return JsonResponse({'code': 400, 'errMsg': '无此商品分类'})
+        # 查询当天这个分类的记录
+        today = date.today()
+        try:
+            gvc = GoodsVisitCount.objects.get(category=category, date=today)
+        except GoodsVisitCount.DoesNotExist:
+            # 无当天数据，新建数据
+            GoodsVisitCount.objects.create(category=category, date=today, count=1)
+        else:
+            # 已有当天数据，更新数据，使访问量+1
+            gvc.count += 1
+            gvc.save()
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})

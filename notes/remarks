@@ -28,6 +28,9 @@ views.py文件用于编写Web应用视图。
 1，将模型类反向生成数据表
 1-1：命令行执行 python manage.py makemigrations，作用：生成迁移文件，将“模型类”转换为表结构文件
 1-2：命令行执行 python manage.py migrate，作用：执行第一步生成的迁移文件，执行表结构文件，数据库生成表（默认生成在Django项目自带的sqlite数据库中）
+Q&A
+Q：如果执行迁移时，数据库中已经存在需要迁移的表，会导致迁移失败
+A：方案一：删表或者删库；方案二：修改数据迁移记录表（django_migrations）中的对应数据
 
 四，Django admin站点：http://127.0.0.1:8000/admin/
 账密：wyuan/12345678;admin/66666666
