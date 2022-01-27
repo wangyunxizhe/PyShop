@@ -1,10 +1,6 @@
 import os
 import time
-
-from apscheduler.schedulers.background import BackgroundScheduler
-from django_apscheduler.jobstores import DjangoJobStore, register_job, register_events
-
-from utils.goods import get_categories
+from utils.goods import get_categories, get_breadcrumb, get_goods_specs
 from apps.contents.models import ContentCategory
 from django.template import loader
 
@@ -15,7 +11,7 @@ from django.template import loader
 
 def generic_shop_index():
     """
-    页面静态化：针对本项目的首页，详情页面
+    页面静态化：针对本项目的首页
     目的：让用户可以直接访问经过数据渲染后的html，不用在访问的同时等待后台数据的返回
     做法：将已经经过数据渲染的html写入到指定的前端目录中
     """
@@ -39,4 +35,3 @@ def generic_shop_index():
     file_path = os.path.join('E:/VScode--workspace/pyShop/front_end_pc/index.html')
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(index_html_data)
-
